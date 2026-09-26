@@ -1,5 +1,7 @@
 package Assignment_Category_C;
 
+import java.util.Scanner;
+
 abstract class BillingCustomer {
     protected double price;
 
@@ -42,7 +44,7 @@ class BillingGuest extends BillingCustomer {
 
     @Override
     double calculateBill() {
-        return price;
+        return price + 10;
     }
 }
 
@@ -50,18 +52,44 @@ public class Problem1_CanteenBilling {
 
     public static void main(String[] args) {
 
-        BillingCustomer student = new BillingStudent(200);
-        BillingCustomer staff = new BillingStaff(300);
-        BillingCustomer guest = new BillingGuest(160);
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.printf("STUDENT: %.2f%n", student.calculateBill());
-        System.out.printf("STAFF: %.2f%n", staff.calculateBill());
-        System.out.printf("GUEST: %.2f%n", guest.calculateBill());
+        int n = scanner.nextInt();
+        double total = 0;
 
-        double total = student.calculateBill()
-                + staff.calculateBill()
-                + guest.calculateBill();
+        for (int i = 0; i < n; i++) {
+
+            String type = scanner.next();
+            double price = scanner.nextDouble();
+
+            BillingCustomer customer;
+
+            switch (type) {
+                case "STUDENT":
+                    customer = new BillingStudent(price);
+                    break;
+
+                case "STAFF":
+                    customer = new BillingStaff(price);
+                    break;
+
+                case "GUEST":
+                    customer = new BillingGuest(price);
+                    break;
+
+                default:
+                    continue;
+            }
+
+            double bill = customer.calculateBill();
+
+            System.out.printf("%s: %.2f%n", type, bill);
+
+            total += bill;
+        }
 
         System.out.printf("Total: %.2f%n", total);
+
+        scanner.close();
     }
 }
